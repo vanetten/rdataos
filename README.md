@@ -38,6 +38,12 @@ rake db:create
 rake db:seed
 ```
 
+### Run the app locally
+
+```bash
+rails s
+```
+
 ## Steps used to create the application
 
 ### Create a rails API application
