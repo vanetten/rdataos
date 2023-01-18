@@ -1,0 +1,50 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/insurances":
+    post:
+      summary: Creates an insurance
+      tags:
+      - Insurances
+      parameters: []
+      responses:
+        '201':
+          description: insurance created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                age:
+                  type: integer
+                sex:
+                  type: string
+                bmi:
+                  type: decimal
+                children:
+                  type: integer
+                smoker:
+                  type: string
+                region:
+                  type: string
+                charges:
+                  type: decimal
+              required:
+              - age
+              - sex
+              - bmi
+              - children
+              - smoker
+              - region
+              - charges
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com

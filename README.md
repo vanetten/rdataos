@@ -31,6 +31,13 @@ rbenv install 2.7.1
 gem install rails
 ```
 
+### Create and seed the database
+
+```bash
+rake db:create
+rake db:seed
+```
+
 ## Steps used to create the application
 
 ### Create a rails API application
@@ -87,3 +94,53 @@ rails g controller authentication
 ```
 
 ### Update route.rb
+
+## Create insurance model and controller
+
+```bash
+rails g model insurance age:integer sex:string bmi:decimal children:integer smoker:string region:string charges:decimal
+rake db:migrate
+```
+
+### Add insurance.csv to lib/seeds
+
+### Modify db/migrate/seeds to load
+
+```bash
+rake db:seed
+```
+### Create a insurances controller and add CRUD
+
+```bash
+rails g controller insurances
+```
+
+## Add swagger
+
+### Add rswag
+
+```bash
+gem 'rswag'
+gem 'rspec-rails'
+```
+
+### Install rswag
+
+```bash
+bundle install
+rails g rspec:install
+rails g rswag:install
+```
+
+### Generate Insurances spec and author spec
+
+```bash
+rails g rspec:swagger API::UsersController
+rails g rspec:swagger API::InsurancesController
+```
+
+### Generate Swagger JSON file
+
+```bash
+rake rswag:specs:swaggerize
+```
