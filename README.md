@@ -79,6 +79,71 @@ bundle install
     origins "*"
 ```
 
+### Add authenticate_request to application_controller
+
+```ruby
+class ApplicationController < ActionController::API
+
+include JsonWebToken
+
+before_action :authenticate_request
+
+private
+
+  def authenticate_request
+    header = request.headers["Authorization"]
+    header = header.split(" ").last if header
+    decoded = jwt_decode(header)
+    @current_user = User.find(decoded[:user_id])
+  end
+
+end
+```
+
+### Create Authentication Controller
+
+```bash
+rails g controller authentication
+```
+
+```ruby
+class AuthenticationController < ApplicationController
+  skip_before_action :authenticate_request
+
+  # POST /auth/signup
+  def signup
+    user = User.new(username: params[:username], password: params[:password])
+    if user.save
+      token = jwt_encode(user_id: user.id)
+      render json: { token: token }, status: :ok
+    else
+      render json: {error: 'unauthorized'}, status: :unauthorized
+    end
+  end
+
+  # POST /auth/login
+  def login
+    user = User.find_by_username(params[:username])
+    if user&.authenticate(params[:password])
+      token = jwt_encode(user_id: user.id)
+      render json: { token: token }, status: :ok
+    else
+      render json: {error: 'unauthorized'}, status: :unauthorized
+    end
+  end
+
+end
+```
+
+### Update routes.rb
+
+```ruby
+  resources :users
+  resources :insurances
+  post '/auth/signup', to: 'authentication#signup'
+  post '/auth/login', to: 'authentication#login'
+```
+
 ### Create a user model with rails generator
 
 ```bash
@@ -173,71 +238,6 @@ module JsonWebToken
   end
 
 end
-```
-
-### Add authenticate_request to application_controller
-
-```ruby
-class ApplicationController < ActionController::API
-
-include JsonWebToken
-
-before_action :authenticate_request
-
-private
-
-  def authenticate_request
-    header = request.headers["Authorization"]
-    header = header.split(" ").last if header
-    decoded = jwt_decode(header)
-    @current_user = User.find(decoded[:user_id])
-  end
-
-end
-```
-
-### Create Authentication Controller
-
-```bash
-rails g controller authentication
-```
-
-```ruby
-class AuthenticationController < ApplicationController
-  skip_before_action :authenticate_request
-
-  # POST /auth/signup
-  def signup
-    user = User.new(username: params[:username], password: params[:password])
-    if user.save
-      token = jwt_encode(user_id: user.id)
-      render json: { token: token }, status: :ok
-    else
-      render json: {error: 'unauthorized'}, status: :unauthorized
-    end
-  end
-
-  # POST /auth/login
-  def login
-    user = User.find_by_username(params[:username])
-    if user&.authenticate(params[:password])
-      token = jwt_encode(user_id: user.id)
-      render json: { token: token }, status: :ok
-    else
-      render json: {error: 'unauthorized'}, status: :unauthorized
-    end
-  end
-
-end
-```
-
-### Update routes.rb
-
-```ruby
-  resources :users
-  resources :insurances
-  post '/auth/signup', to: 'authentication#signup'
-  post '/auth/login', to: 'authentication#login'
 ```
 
 ## Create insurance model and controller
