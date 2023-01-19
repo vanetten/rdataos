@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   resources :users
   resources :insurances
+  post '/auth/signup', to: 'authentication#signup'
   post '/auth/login', to: 'authentication#login'
   
 end

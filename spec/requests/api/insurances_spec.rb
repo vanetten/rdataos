@@ -12,11 +12,11 @@ describe 'Insurances API' do
         properties: {
           age: { type: :integer },
           sex: { type: :string },
-          bmi: { type: :decimal },
+          bmi: { type: :number },
           children: { type: :integer },
           smoker: { type: :string },
           region: { type: :string },
-          charges: { type: :decimal }
+          charges: { type: :number }
         },
         required: [ 'age', 'sex', 'bmi', 'children', 'smoker', 'region', 'charges' ]
       }

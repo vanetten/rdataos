@@ -26,7 +26,7 @@ paths:
                 sex:
                   type: string
                 bmi:
-                  type: decimal
+                  type: number
                 children:
                   type: integer
                 smoker:
@@ -34,7 +34,7 @@ paths:
                 region:
                   type: string
                 charges:
-                  type: decimal
+                  type: number
               required:
               - age
               - sex
