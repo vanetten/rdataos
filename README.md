@@ -404,4 +404,4 @@ rake rswag:specs:swaggerize
 
 ### View swagger docs
 
-[127.0.0.1:3000/api-docs/](127.0.0.1:3000/api-docs/)
+[127.0.0.1:3000/api-docs/](http://127.0.0.1:3000/api-docs/)
